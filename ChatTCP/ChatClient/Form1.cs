@@ -83,11 +83,10 @@ namespace ChatServer
                 clients.Add(client);
                 serverSocket.BeginAccept(new AsyncCallback(AcceptClients), null);
 
-                //Once the client connects then start 
-                //receiving the commands from her
-                //client.BeginReceive(byteData, 0,
-                //    byteData.Length, SocketFlags.None,
-                //    new AsyncCallback(OnReceive), clientSocket);
+
+                client.BeginReceive(buffer, 0,
+                    buffer.Length, SocketFlags.None,
+                    new AsyncCallback(DataRecieve), client);
             }
             catch (Exception ex)
             {
@@ -96,7 +95,22 @@ namespace ChatServer
             }
         }
 
+        public void DataRecieve(IAsyncResult ar)
+        {
+            try
+            {
+                Socket socket = (Socket)ar;
+                socket.EndReceive(ar);
 
+                string result = System.Text.Encoding.UTF8.GetString(buffer);
+                MessageBox.Show(result);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Server Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
+        }
 
 
         private void backgroundWorkerStatus_DoWork(object sender, DoWorkEventArgs e)
