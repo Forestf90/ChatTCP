@@ -49,13 +49,15 @@ namespace ChatClient
             }
             else
             {
+                textBoxName.Enabled = false;
+                textBoxName.Text = null;
                 userName = "Anonymous";
             }
         }
 
         private void buttonConnect_Click(object sender, EventArgs e)
         {
-            //richTextBoxChat.Text = userName;
+
             int port = 0;
             try
             {
@@ -73,7 +75,7 @@ namespace ChatClient
             }
 
             IPAddress ip;
-            //pAddress = IPAddress.Parse(txtServerIP.Text);
+
             try
             {
                 ip = IPAddress.Parse(textBoxIP.Text);
@@ -104,6 +106,26 @@ namespace ChatClient
             }
 
         }
-        
+
+        private void buttonSend_Click(object sender, EventArgs e)
+        {
+            buffer = Encoding.UTF8.GetBytes(textBoxSend.Text);
+
+            socket.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(DataSend), null);
+        }
+
+        private void DataSend(IAsyncResult ar)
+        {
+            try
+            {
+                socket.EndSend(ar);
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Client Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

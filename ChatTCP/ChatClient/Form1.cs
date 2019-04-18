@@ -99,7 +99,7 @@ namespace ChatServer
         {
             try
             {
-                Socket socket = (Socket)ar;
+                Socket socket = (Socket)ar.AsyncState;
                 socket.EndReceive(ar);
 
                 string result = System.Text.Encoding.UTF8.GetString(buffer);
