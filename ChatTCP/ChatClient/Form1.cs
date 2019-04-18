@@ -24,9 +24,6 @@ namespace ChatServer
             InitializeComponent();
             serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             clients = new List<Socket>();
-
-
-
         }
 
         private void buttonStart_Click(object sender, EventArgs e)
@@ -84,14 +81,11 @@ namespace ChatServer
                 serverSocket.BeginAccept(new AsyncCallback(AcceptClients), null);
 
 
-                client.BeginReceive(buffer, 0,
-                    buffer.Length, SocketFlags.None,
-                    new AsyncCallback(DataRecieve), client);
+                client.BeginReceive(buffer, 0,buffer.Length, SocketFlags.None,new AsyncCallback(DataRecieve), client);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Server error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Server error",MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -101,15 +95,32 @@ namespace ChatServer
             {
                 Socket socket = (Socket)ar.AsyncState;
                 socket.EndReceive(ar);
-
-                string result = System.Text.Encoding.UTF8.GetString(buffer);
-                MessageBox.Show(result);
+                foreach(Socket s in clients)
+                {
+                    s.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(DataSend), s);
+                }
+                //string result = System.Text.Encoding.UTF8.GetString(buffer);
+                //MessageBox.Show(result);
+                socket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(DataRecieve), socket);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Server Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             
+        }
+        private void DataSend(IAsyncResult ar)
+        {
+            try
+            {
+                Socket socket = (Socket)ar.AsyncState;
+                socket.EndSend(ar);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Server Errrrrror", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
 

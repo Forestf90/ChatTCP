@@ -98,7 +98,25 @@ namespace ChatClient
             try
             {
                 socket.EndConnect(ar);
+                socket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(DataRecieve), null);
 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Client Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+
+        public void DataRecieve(IAsyncResult ar)
+        {
+            try
+            {
+                //Socket socket = (Socket)ar.AsyncState;
+                socket.EndReceive(ar);
+                string receiveMassage = System.Text.Encoding.UTF8.GetString(buffer);
+                richTextBoxChat.Text += receiveMassage + System.Environment.NewLine;
+                socket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(DataRecieve), null);
             }
             catch (Exception ex)
             {
@@ -119,8 +137,6 @@ namespace ChatClient
             try
             {
                 socket.EndSend(ar);
-
-
             }
             catch (Exception ex)
             {
