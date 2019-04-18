@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,6 +15,8 @@ namespace ChatClient
     public partial class Form1 : Form
     {
         public string userName;
+        public Socket socket;
+        public byte[] buffer = new byte[1024];
         public Form1()
         {
             InitializeComponent();
@@ -51,7 +55,55 @@ namespace ChatClient
 
         private void buttonConnect_Click(object sender, EventArgs e)
         {
-            richTextBoxChat.Text = userName;
+            //richTextBoxChat.Text = userName;
+            int port = 0;
+            try
+            {
+                port = Convert.ToInt32(textBoxPort.Text);
+                if (port < 0 || port > 65535)
+                {
+                    MessageBox.Show("Port should be in range beetwen 0 and 65535");
+                    return;
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Enter the proper port");
+                return;
+            }
+
+            IPAddress ip;
+            //pAddress = IPAddress.Parse(txtServerIP.Text);
+            try
+            {
+                ip = IPAddress.Parse(textBoxIP.Text);
+                IPEndPoint ep = new IPEndPoint(ip, port);
+
+                socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                socket.BeginConnect(ep, new AsyncCallback(ConnectToServer), null);
+            }
+            catch
+            {
+                MessageBox.Show("Enter the proper IP");
+                return;
+            }
+
         }
+
+
+        private void ConnectToServer(IAsyncResult ar)
+        {
+            try
+            {
+                socket.EndConnect(ar);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Client Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+        
     }
 }

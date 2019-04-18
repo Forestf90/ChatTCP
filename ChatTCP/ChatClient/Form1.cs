@@ -19,23 +19,21 @@ namespace ChatServer
         private static List<Socket> clients;
         private static byte[] buffer = new byte[1024];
 
-        private readonly SynchronizationContext synchronizationContext;
         public Form1()
         {
             InitializeComponent();
             serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             clients = new List<Socket>();
 
-            synchronizationContext = SynchronizationContext.Current;
+
 
         }
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
-            buttonStart.Enabled = false;
-            textBoxPort.Enabled = false;
+
             int port = 0;
-            backgroundWorkerStatus.RunWorkerAsync();
+            
             try
             {
                 port = Convert.ToInt32(textBoxPort.Text);
@@ -50,6 +48,9 @@ namespace ChatServer
                 MessageBox.Show("Enter the proper port");
                 return;
             }
+            buttonStart.Enabled = false;
+            textBoxPort.Enabled = false;
+            //backgroundWorkerStatus.RunWorkerAsync();
             StartServer(port);
         }
 
@@ -73,7 +74,8 @@ namespace ChatServer
 
         private void AcceptClients(IAsyncResult ar)
         {
-
+            backgroundWorkerStatus.RunWorkerAsync();
+            backgroundWorkerStatus.ReportProgress(clients.Count());
             try
             {
 
