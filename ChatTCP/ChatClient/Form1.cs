@@ -50,7 +50,8 @@ namespace ChatServer
             }
             buttonStart.Enabled = false;
             textBoxPort.Enabled = false;
-            //backgroundWorkerStatus.RunWorkerAsync();
+
+            backgroundWorkerStatus.RunWorkerAsync();
             StartServer(port);
         }
 
@@ -75,13 +76,11 @@ namespace ChatServer
         private void AcceptClients(IAsyncResult ar)
         {
             backgroundWorkerStatus.RunWorkerAsync();
-            backgroundWorkerStatus.ReportProgress(clients.Count());
             try
             {
 
                 Socket client = serverSocket.EndAccept(ar);
                 clients.Add(client);
-                //Start listening for more clients
                 serverSocket.BeginAccept(new AsyncCallback(AcceptClients), null);
 
                 //Once the client connects then start 
@@ -99,9 +98,14 @@ namespace ChatServer
 
 
 
-        private void backgroundWorkerStatus_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+
+        private void backgroundWorkerStatus_DoWork(object sender, DoWorkEventArgs e)
         {
-            labelStatus.Text = "Server running - " + clients.Count() + " clients connected.";
+            labelStatus.Invoke((MethodInvoker)delegate {
+                labelStatus.Text = "Server running - " + clients.Count() + " clients connected.";
+            });
         }
+
+
     }
 }

@@ -73,7 +73,8 @@
             // 
             // backgroundWorkerStatus
             // 
-            this.backgroundWorkerStatus.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerStatus_RunWorkerCompleted);
+            this.backgroundWorkerStatus.WorkerReportsProgress = true;
+            this.backgroundWorkerStatus.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerStatus_DoWork);
             // 
             // Form1
             // 
