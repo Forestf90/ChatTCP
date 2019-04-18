@@ -1,4 +1,4 @@
-﻿namespace ChatServer
+﻿namespace ChatClient
 {
     partial class Form1
     {
