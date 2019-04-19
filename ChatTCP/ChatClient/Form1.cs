@@ -100,13 +100,30 @@ namespace ChatServer
                 Client cl = (Client)ar.AsyncState;
                 Socket socket = cl.socket;
                 socket.EndReceive(ar);
-                if (String.IsNullOrWhiteSpace(System.Text.Encoding.UTF8.GetString(cl.buffer))){ }
+                bool part1 = socket.Poll(1000, SelectMode.SelectRead);
+                bool part2 = (socket.Available == 0);
+                if (part1 && part2)
+                {
+                    string receiveMassage = cl.GetNick() + " left chat";
+                    clients.Remove(cl);
+                    cl.socket.Shutdown(SocketShutdown.Both);
+                    LabelUpdate();
+                    byte[] bufferTemp = System.Text.Encoding.UTF8.GetBytes(Environment.NewLine + receiveMassage);
+                    foreach (Client c in clients)
+                    {
+                        c.socket.BeginSend(bufferTemp, 0, bufferTemp.Length, SocketFlags.None, new AsyncCallback(DataSend), c.socket);
+                    }
+                    return;
+                }
+
+
+                if (String.IsNullOrWhiteSpace(System.Text.Encoding.UTF8.GetString(cl.buffer).TrimEnd('\0'))){ }
                 else if (String.IsNullOrWhiteSpace(cl.Nick))
                 {
                     string clientName = System.Text.Encoding.UTF8.GetString(cl.buffer);
                     clientName= clientName.TrimEnd('\0');
-                    cl.Nick = "["+ clientName + "]:";
-                    clientName = "<<< " + clientName + " join chat >>>".Replace(Environment.NewLine, "");
+                    cl.Nick = clientName;
+                    clientName = "<<< " + cl.Nick + " join chat >>>".Replace(Environment.NewLine, "");
                     byte[] bufferTemp = System.Text.Encoding.UTF8.GetBytes(Environment.NewLine+clientName);
                     foreach (Client c in clients)
                     {
@@ -115,7 +132,7 @@ namespace ChatServer
                 }
                 else
                 {
-                    string receiveMassage = cl.Nick+System.Text.Encoding.UTF8.GetString(cl.buffer);
+                    string receiveMassage = cl.GetNick() + System.Text.Encoding.UTF8.GetString(cl.buffer);
                     byte[] bufferTemp = System.Text.Encoding.UTF8.GetBytes(Environment.NewLine+receiveMassage);
                     foreach (Client c in clients)
                     {
@@ -127,17 +144,8 @@ namespace ChatServer
             }
             catch (SocketException ex)
             {
-               // MessageBox.Show(ex.Message, "Server Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Client cl = (Client)ar.AsyncState;
-                string receiveMassage = cl.Nick + " left chat";
-                clients.Remove(cl);
-                cl.socket.Shutdown(SocketShutdown.Both);
-                LabelUpdate();
-                byte[] bufferTemp = System.Text.Encoding.UTF8.GetBytes(Environment.NewLine + receiveMassage);
-                foreach (Client c in clients)
-                {
-                    c.socket.BeginSend(bufferTemp, 0, bufferTemp.Length, SocketFlags.None, new AsyncCallback(DataSend), c.socket);
-                }
+                MessageBox.Show(ex.Message, "Server Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
             }
             
         }

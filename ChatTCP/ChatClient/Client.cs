@@ -12,5 +12,9 @@ namespace ChatServer
         public Socket socket { get; set; }
         public string Nick { get; set; }
         public byte[] buffer { get; set; }
+        public string GetNick()
+        {
+            return "[" + Nick + "]:";
+        }
     }
 }

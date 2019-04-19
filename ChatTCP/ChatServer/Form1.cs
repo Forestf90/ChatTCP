@@ -139,6 +139,9 @@ namespace ChatClient
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Client Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                socket.Shutdown(SocketShutdown.Both);
+                socket = null;
+                groupBox1.Enabled = true;
             }
 
         }
@@ -172,7 +175,11 @@ namespace ChatClient
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            socket.Shutdown(SocketShutdown.Both);
+            if (socket != null)
+            {
+                socket.Shutdown(SocketShutdown.Both);
+            }
+            
         }
     }
 }
