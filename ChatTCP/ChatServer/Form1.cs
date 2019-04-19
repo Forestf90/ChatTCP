@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,12 +17,15 @@ namespace ChatClient
     {
         public string userName;
         public Socket socket;
-        public byte[] buffer = new byte[1024];
+        public byte[] buffer = new byte[8192];
+
+        Mutex mutex;
         public Form1()
         {
             InitializeComponent();
 
             userName = radioButtonAn.Text;
+            mutex = new Mutex();
         }
 
         private void textBoxName_TextChanged(object sender, EventArgs e)
@@ -36,8 +40,15 @@ namespace ChatClient
         {
             if (String.IsNullOrWhiteSpace(textBoxName.Text))
             {
-                //userName = "Anonymous";
                 radioButtonAn.Checked=true;
+            }
+        }
+        private void textBoxSend_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                buttonSend_Click(this, new EventArgs());
+                e.SuppressKeyPress = true;
             }
         }
 
@@ -81,8 +92,10 @@ namespace ChatClient
                 ip = IPAddress.Parse(textBoxIP.Text);
                 IPEndPoint ep = new IPEndPoint(ip, port);
 
+                
                 socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 socket.BeginConnect(ep, new AsyncCallback(ConnectToServer), null);
+                
             }
             catch
             {
@@ -98,6 +111,11 @@ namespace ChatClient
             try
             {
                 socket.EndConnect(ar);
+                groupBox1.Enabled = false;
+                buttonSend.Enabled = true;
+                textBoxSend.Enabled = true;
+                byte[] bufferTemp = Encoding.UTF8.GetBytes(userName);
+                socket.BeginSend(bufferTemp, 0, bufferTemp.Length, SocketFlags.None, new AsyncCallback(DataSend), null);
                 socket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(DataRecieve), null);
 
             }
@@ -112,10 +130,10 @@ namespace ChatClient
         {
             try
             {
-                //Socket socket = (Socket)ar.AsyncState;
                 socket.EndReceive(ar);
                 string receiveMassage = System.Text.Encoding.UTF8.GetString(buffer);
-                richTextBoxChat.Text += receiveMassage + System.Environment.NewLine;
+                UpdateChat(receiveMassage);
+                buffer = new byte[8192]; 
                 socket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(DataRecieve), null);
             }
             catch (Exception ex)
@@ -127,9 +145,10 @@ namespace ChatClient
 
         private void buttonSend_Click(object sender, EventArgs e)
         {
-            buffer = Encoding.UTF8.GetBytes(textBoxSend.Text);
-
-            socket.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(DataSend), null);
+            if (String.IsNullOrWhiteSpace(textBoxSend.Text)) return;
+            byte[] bufferTemp= Encoding.UTF8.GetBytes(textBoxSend.Text) ;
+            textBoxSend.Text = null;
+            socket.BeginSend(bufferTemp, 0, bufferTemp.Length, SocketFlags.None, new AsyncCallback(DataSend), null);
         }
 
         private void DataSend(IAsyncResult ar)
@@ -142,6 +161,18 @@ namespace ChatClient
             {
                 MessageBox.Show(ex.Message, "Client Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void UpdateChat(string message)
+        {               
+                richTextBoxChat.Invoke((MethodInvoker)delegate {
+                    richTextBoxChat.Text += message ;
+                });
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            socket.Shutdown(SocketShutdown.Both);
         }
     }
 }

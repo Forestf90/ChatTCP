@@ -32,7 +32,6 @@
             this.textBoxPort = new System.Windows.Forms.TextBox();
             this.buttonStart = new System.Windows.Forms.Button();
             this.labelStatus = new System.Windows.Forms.Label();
-            this.backgroundWorkerStatus = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // labelPort
@@ -54,7 +53,7 @@
             // 
             // buttonStart
             // 
-            this.buttonStart.Location = new System.Drawing.Point(253, 54);
+            this.buttonStart.Location = new System.Drawing.Point(253, 49);
             this.buttonStart.Name = "buttonStart";
             this.buttonStart.Size = new System.Drawing.Size(75, 23);
             this.buttonStart.TabIndex = 4;
@@ -71,20 +70,19 @@
             this.labelStatus.TabIndex = 5;
             this.labelStatus.Text = "Server is offline";
             // 
-            // backgroundWorkerStatus
-            // 
-            this.backgroundWorkerStatus.WorkerReportsProgress = true;
-            this.backgroundWorkerStatus.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerStatus_DoWork);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.LightSteelBlue;
             this.ClientSize = new System.Drawing.Size(340, 94);
             this.Controls.Add(this.labelStatus);
             this.Controls.Add(this.buttonStart);
             this.Controls.Add(this.textBoxPort);
             this.Controls.Add(this.labelPort);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Form1";
             this.Text = "Server";
             this.ResumeLayout(false);
@@ -98,7 +96,6 @@
         private System.Windows.Forms.Button buttonStart;
         private System.Windows.Forms.Label labelStatus;
         private System.ComponentModel.BackgroundWorker backgroundWorkerUpdatelabel;
-        private System.ComponentModel.BackgroundWorker backgroundWorkerStatus;
     }
 }
 

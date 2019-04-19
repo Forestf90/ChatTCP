@@ -48,21 +48,22 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.buttonConnect);
             this.groupBox1.Controls.Add(this.textBoxPort);
             this.groupBox1.Controls.Add(this.textBoxIP);
             this.groupBox1.Controls.Add(this.labelPort);
             this.groupBox1.Controls.Add(this.labelIP);
-            this.groupBox1.Location = new System.Drawing.Point(283, 12);
+            this.groupBox1.Location = new System.Drawing.Point(283, 13);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(180, 118);
+            this.groupBox1.Size = new System.Drawing.Size(180, 250);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Server coonnection";
             // 
             // buttonConnect
             // 
-            this.buttonConnect.Location = new System.Drawing.Point(85, 84);
+            this.buttonConnect.Location = new System.Drawing.Point(99, 206);
             this.buttonConnect.Name = "buttonConnect";
             this.buttonConnect.Size = new System.Drawing.Size(75, 23);
             this.buttonConnect.TabIndex = 4;
@@ -107,22 +108,25 @@
             // richTextBoxChat
             // 
             this.richTextBoxChat.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.richTextBoxChat.Enabled = false;
             this.richTextBoxChat.Location = new System.Drawing.Point(13, 13);
             this.richTextBoxChat.Name = "richTextBoxChat";
+            this.richTextBoxChat.ReadOnly = true;
             this.richTextBoxChat.Size = new System.Drawing.Size(264, 337);
             this.richTextBoxChat.TabIndex = 1;
             this.richTextBoxChat.Text = "";
             // 
             // textBoxSend
             // 
+            this.textBoxSend.Enabled = false;
             this.textBoxSend.Location = new System.Drawing.Point(13, 357);
             this.textBoxSend.Name = "textBoxSend";
             this.textBoxSend.Size = new System.Drawing.Size(264, 20);
             this.textBoxSend.TabIndex = 2;
+            this.textBoxSend.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxSend_KeyDown);
             // 
             // buttonSend
             // 
+            this.buttonSend.Enabled = false;
             this.buttonSend.Location = new System.Drawing.Point(283, 357);
             this.buttonSend.Name = "buttonSend";
             this.buttonSend.Size = new System.Drawing.Size(75, 23);
@@ -137,9 +141,9 @@
             this.groupBox2.Controls.Add(this.textBoxName);
             this.groupBox2.Controls.Add(this.radioButtonNa);
             this.groupBox2.Controls.Add(this.radioButtonAn);
-            this.groupBox2.Location = new System.Drawing.Point(284, 171);
+            this.groupBox2.Location = new System.Drawing.Point(10, 84);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(179, 129);
+            this.groupBox2.Size = new System.Drawing.Size(164, 107);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "User Name";
@@ -149,7 +153,7 @@
             this.textBoxName.Enabled = false;
             this.textBoxName.Location = new System.Drawing.Point(72, 54);
             this.textBoxName.Name = "textBoxName";
-            this.textBoxName.Size = new System.Drawing.Size(101, 20);
+            this.textBoxName.Size = new System.Drawing.Size(86, 20);
             this.textBoxName.TabIndex = 2;
             this.textBoxName.TextChanged += new System.EventHandler(this.textBoxName_TextChanged);
             this.textBoxName.Leave += new System.EventHandler(this.textBoxName_Leave);
@@ -183,13 +187,17 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.CornflowerBlue;
             this.ClientSize = new System.Drawing.Size(475, 407);
-            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.buttonSend);
             this.Controls.Add(this.textBoxSend);
             this.Controls.Add(this.richTextBoxChat);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Client";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
