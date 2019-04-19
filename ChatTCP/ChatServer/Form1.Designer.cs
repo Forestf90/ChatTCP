@@ -29,6 +29,10 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.textBoxName = new System.Windows.Forms.TextBox();
+            this.radioButtonNa = new System.Windows.Forms.RadioButton();
+            this.radioButtonAn = new System.Windows.Forms.RadioButton();
             this.buttonConnect = new System.Windows.Forms.Button();
             this.textBoxPort = new System.Windows.Forms.TextBox();
             this.textBoxIP = new System.Windows.Forms.TextBox();
@@ -37,10 +41,6 @@
             this.richTextBoxChat = new System.Windows.Forms.RichTextBox();
             this.textBoxSend = new System.Windows.Forms.TextBox();
             this.buttonSend = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.textBoxName = new System.Windows.Forms.TextBox();
-            this.radioButtonNa = new System.Windows.Forms.RadioButton();
-            this.radioButtonAn = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -61,6 +61,52 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Server coonnection";
             // 
+            // groupBox2
+            // 
+            this.groupBox2.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.groupBox2.Controls.Add(this.textBoxName);
+            this.groupBox2.Controls.Add(this.radioButtonNa);
+            this.groupBox2.Controls.Add(this.radioButtonAn);
+            this.groupBox2.Location = new System.Drawing.Point(10, 84);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(164, 107);
+            this.groupBox2.TabIndex = 4;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "User Name";
+            // 
+            // textBoxName
+            // 
+            this.textBoxName.Enabled = false;
+            this.textBoxName.Location = new System.Drawing.Point(72, 54);
+            this.textBoxName.Name = "textBoxName";
+            this.textBoxName.Size = new System.Drawing.Size(86, 20);
+            this.textBoxName.TabIndex = 2;
+            this.textBoxName.TextChanged += new System.EventHandler(this.textBoxName_TextChanged);
+            this.textBoxName.Leave += new System.EventHandler(this.textBoxName_Leave);
+            // 
+            // radioButtonNa
+            // 
+            this.radioButtonNa.AutoSize = true;
+            this.radioButtonNa.Location = new System.Drawing.Point(7, 54);
+            this.radioButtonNa.Name = "radioButtonNa";
+            this.radioButtonNa.Size = new System.Drawing.Size(59, 17);
+            this.radioButtonNa.TabIndex = 1;
+            this.radioButtonNa.Text = "Name :";
+            this.radioButtonNa.UseVisualStyleBackColor = true;
+            this.radioButtonNa.CheckedChanged += new System.EventHandler(this.radioButtonNa_CheckedChanged);
+            // 
+            // radioButtonAn
+            // 
+            this.radioButtonAn.AutoSize = true;
+            this.radioButtonAn.Checked = true;
+            this.radioButtonAn.Location = new System.Drawing.Point(7, 30);
+            this.radioButtonAn.Name = "radioButtonAn";
+            this.radioButtonAn.Size = new System.Drawing.Size(80, 17);
+            this.radioButtonAn.TabIndex = 0;
+            this.radioButtonAn.TabStop = true;
+            this.radioButtonAn.Text = "Anonymous";
+            this.radioButtonAn.UseVisualStyleBackColor = true;
+            // 
             // buttonConnect
             // 
             this.buttonConnect.Location = new System.Drawing.Point(99, 206);
@@ -77,7 +123,6 @@
             this.textBoxPort.Name = "textBoxPort";
             this.textBoxPort.Size = new System.Drawing.Size(100, 20);
             this.textBoxPort.TabIndex = 3;
-            this.textBoxPort.Text = "20333";
             // 
             // textBoxIP
             // 
@@ -85,7 +130,6 @@
             this.textBoxIP.Name = "textBoxIP";
             this.textBoxIP.Size = new System.Drawing.Size(100, 20);
             this.textBoxIP.TabIndex = 2;
-            this.textBoxIP.Text = "10.0.1.249";
             // 
             // labelPort
             // 
@@ -134,52 +178,6 @@
             this.buttonSend.Text = "Send";
             this.buttonSend.UseVisualStyleBackColor = true;
             this.buttonSend.Click += new System.EventHandler(this.buttonSend_Click);
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.groupBox2.Controls.Add(this.textBoxName);
-            this.groupBox2.Controls.Add(this.radioButtonNa);
-            this.groupBox2.Controls.Add(this.radioButtonAn);
-            this.groupBox2.Location = new System.Drawing.Point(10, 84);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(164, 107);
-            this.groupBox2.TabIndex = 4;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "User Name";
-            // 
-            // textBoxName
-            // 
-            this.textBoxName.Enabled = false;
-            this.textBoxName.Location = new System.Drawing.Point(72, 54);
-            this.textBoxName.Name = "textBoxName";
-            this.textBoxName.Size = new System.Drawing.Size(86, 20);
-            this.textBoxName.TabIndex = 2;
-            this.textBoxName.TextChanged += new System.EventHandler(this.textBoxName_TextChanged);
-            this.textBoxName.Leave += new System.EventHandler(this.textBoxName_Leave);
-            // 
-            // radioButtonNa
-            // 
-            this.radioButtonNa.AutoSize = true;
-            this.radioButtonNa.Location = new System.Drawing.Point(7, 54);
-            this.radioButtonNa.Name = "radioButtonNa";
-            this.radioButtonNa.Size = new System.Drawing.Size(59, 17);
-            this.radioButtonNa.TabIndex = 1;
-            this.radioButtonNa.Text = "Name :";
-            this.radioButtonNa.UseVisualStyleBackColor = true;
-            this.radioButtonNa.CheckedChanged += new System.EventHandler(this.radioButtonNa_CheckedChanged);
-            // 
-            // radioButtonAn
-            // 
-            this.radioButtonAn.AutoSize = true;
-            this.radioButtonAn.Checked = true;
-            this.radioButtonAn.Location = new System.Drawing.Point(7, 30);
-            this.radioButtonAn.Name = "radioButtonAn";
-            this.radioButtonAn.Size = new System.Drawing.Size(80, 17);
-            this.radioButtonAn.TabIndex = 0;
-            this.radioButtonAn.TabStop = true;
-            this.radioButtonAn.Text = "Anonymous";
-            this.radioButtonAn.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
