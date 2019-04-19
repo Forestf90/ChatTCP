@@ -104,7 +104,7 @@ namespace ChatServer
                 bool part2 = (socket.Available == 0);
                 if (part1 && part2)
                 {
-                    string receiveMassage = cl.GetNick() + " left chat";
+                    string receiveMassage = cl.Nick + " left chat";
                     clients.Remove(cl);
                     cl.socket.Shutdown(SocketShutdown.Both);
                     LabelUpdate();
