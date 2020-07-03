@@ -9,7 +9,7 @@ Both client and server applications are written in Winforms and support asynchro
 
 To start the server you need to enter the port number on which the server should listen to the calls and press the button "Start Server"
 
-![](images/server.png)
+![](images/server.jpg)
 
 
 ## Client
@@ -17,6 +17,6 @@ To start the server you need to enter the port number on which the server should
 
 To connect to the server, enter ip, port and optional username 
 
-![](images/client.png)
+![](images/client.jpg)
 
-![](images/clientserver.png)
+![](images/clientserver.jpg)
